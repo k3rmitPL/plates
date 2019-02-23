@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Quiz z tablic rejstracyjnych">
+    <meta name="keywords" content="tablice rejestracyjne">
+    <meta name="author" content="Bartek Lisok">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body, html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial;
+      }
+      #content {
+        height: 100vh;
+        padding-bottom: 10vw;
+        font-size: 10vw;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background: #eee;
+        perspective: 700px;
+        display: flex;
+      }
+
+      #plate {
+        margin: 0 auto;
+        border-radius: 1vw;
+        background: #fff;
+        border: .5vw solid #000;
+        display: inline-block;
+      }
+      #plate .sidebar {
+        float: left;
+        height: 100%;
+        padding: 1vw .6vw;
+        vertical-align: bottom;
+        font-size: 3vw;
+        color: #fff;
+        align-items: flex-end;
+        background: #003a9e;
+        display: flex;
+      }
+      #plate .number {
+        padding: 0 2vw;
+      }
+      #answer {
+        margin: 5vw;
+        height: 14vw;
+        font-size: 5vw;
+        line-height: 7vw;
+        transform: rotateY(90deg);
+        /* transform-origin: 0 0; */
+        backface-visibility: hidden;
+        opacity: 0;
+
+      }
+      #answer.visible {
+        transform: rotateY(0deg);
+        opacity: 1;
+        transition: 1s;
+      }
+
+
+      #next-plate {
+        top: 0;
+        right: 0;
+        width: 10vw;
+        height: 10vw;
+        color: #fff;
+        font-size: 6vw;
+        background: #085c98;
+        position: absolute;
+      }
+
+
+      #show-answer {
+        width: 100%;
+        bottom: 0;
+        height: 10vw;
+        color: #fff;
+        font-size: 3vw;
+        background: #08984a;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <div id="plate">
+        <span class="sidebar">PL</span>
+        <span class="number"></span>
+      </div>
+      <div id="answer">
+      </div>
+      <button id="show-answer">Pokaż odpowiedź</button>
+      <button id="next-plate">&raquo;</button>
+    </div>
+
+    <script>
+      var plates_mapping = {
+        'podlaskie': {
+          BI: 'Białystok',
+          BLM: 'Łomża powiat',
+          BL: 'Łomża miasto',
+          BMN: 'Mońki',
+          BS: 'Suwałki miasto',
+          BSE: 'Sejny',
+          BAU: 'Augustów',
+          BSI: 'Siemiatycze',
+          BBI: 'Bielsk Podlaski',
+          BSK: 'Sokółka',
+          BGR: 'Grajewo',
+          BSU: 'Suwałki powiat',
+          BHA: 'Hajnówka',
+          BWM: 'Wysokie Mazowieckie',
+          BIA: 'Białystok powiat',
+          BZA: 'Zambrów',
+          BKL: 'Kolno',
+        },
+        'kujawsko-pomorskie': {
+          CB: 'Bydgoszcz',
+          CMG: 'Mogilno',
+          CG: 'Grudziądz miasto',
+          CNA: 'Nakło n. Notecią',
+          CT: 'Toruń',
+          CRA: 'Radziejów',
+          CW: 'Włocławek miasto',
+          CRY: 'Rypin',
+          CAL: 'Aleksandrów Kujawski',
+          CSE: 'Sępólno Krajeńskie',
+          CBR: 'Brodnica',
+          CSW: 'Świecie',
+          CBY: 'Bydgoszcz powiat',
+          CTR: 'Toruń powiat',
+          CCH: 'Chełmno',
+          CTU: 'Tuchola',
+          CGD: 'Golub-Dobrzyń',
+          CWA: 'Wąbrzeźno',
+          CGR: 'Grudziądz powiat',
+          CWL: 'Włocławek powiat',
+          CIN: 'Inowrocław',
+          CZN: 'Żnin',
+          CLI: 'Lipno',
+        },
+        'dolnośląskie': {
+          DB: 'Wałbrzych miasto',
+          DLU: 'Lubin',
+          DJ: 'Jelenia Góra miasto',
+          DLW: 'Lwówek',
+          DL: 'Legnica miasto',
+          DMI: 'Milicz',
+          DW: 'Wrocław',
+          DOA: 'Oława',
+          DBA: 'Wałbrzych powiat',
+          DOL: 'Oleśnica',
+          DBL: 'Bolesławiec',
+          DPL: 'Polkowice',
+          DDZ: 'Dzierżoniów',
+          DSR: 'Środa Śl.',
+          DGL: 'Głogów',
+          DST: 'Strzelin',
+          DGR: 'Góra',
+          DSW: 'Świdnica',
+          DJA: 'Jawor',
+          DTR: 'Trzebnica',
+          DJE: 'Jelenia Góra powiat',
+          DWL: 'Wołów',
+          DKA: 'Kamienna Góra',
+          DWR: 'Wrocław powiat',
+          DKL: 'Kłodzko',
+          DZA: 'Ząbkowice',
+          DLB: 'Lubań',
+          DZG: 'Zgorzelec',
+          DLE: 'Legnica powiat',
+          DZL: 'Złotoryja',
+        },
+      };
+
+
+      function generatePlate() {
+        var number = Math.floor(Math.random() * 89999) + 10000
+        var voivodeship = Object.keys(plates_mapping)[Math.floor(Math.random() * Object.keys(plates_mapping).length)];
+        var city_code = Object.keys(plates_mapping[voivodeship])[Math.floor(Math.random() * Object.keys(plates_mapping[voivodeship]).length)];
+        //console.log(voivodeship);
+        document.querySelector('#plate .number').innerText = city_code + ' ' + number;
+
+        var answer = document.getElementById('answer');
+        answer.innerText = voivodeship + ', ' + plates_mapping[voivodeship][city_code];
+      }
+
+
+      var answerBtn = document.getElementById("show-answer");
+      answerBtn.onclick = function() {
+        var answer = document.getElementById('answer');
+        answer.className = "visible";
+      }
+
+      var nextBtn = document.getElementById("next-plate");
+      nextBtn.onclick = function() {
+        var answer = document.getElementById('answer');
+        answer.className = "";
+        generatePlate();
+      }
+
+      generatePlate();
+    </script>
+  </body>
+</html>

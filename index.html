@@ -10,6 +10,9 @@
     <style>
       * {
         box-sizing: border-box;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
       }
       body, html {
         margin: 0;
@@ -18,7 +21,7 @@
       }
       #content {
         height: 100vh;
-        padding-bottom: 10vw;
+        padding-bottom: 10vh;
         font-size: 10vw;
         text-align: center;
         align-items: center;
@@ -71,21 +74,22 @@
       #next-plate {
         top: 0;
         right: 0;
-        width: 10vw;
-        height: 10vw;
+        width: 10vh;
+        height: 10vh;
         color: #fff;
-        font-size: 6vw;
+        font-size: 6vh;
         background: #085c98;
         position: absolute;
+        webkit-appe
       }
 
 
       #show-answer {
         width: 100%;
         bottom: 0;
-        height: 10vw;
+        height: 10vh;
         color: #fff;
-        font-size: 3vw;
+        font-size: 3vh;
         background: #08984a;
         position: absolute;
       }
@@ -105,82 +109,245 @@
 
     <script>
       var plates_mapping = {
-        'podlaskie': {
-          BI: 'Białystok',
-          BLM: 'Łomża powiat',
-          BL: 'Łomża miasto',
-          BMN: 'Mońki',
-          BS: 'Suwałki miasto',
-          BSE: 'Sejny',
-          BAU: 'Augustów',
-          BSI: 'Siemiatycze',
-          BBI: 'Bielsk Podlaski',
-          BSK: 'Sokółka',
-          BGR: 'Grajewo',
-          BSU: 'Suwałki powiat',
-          BHA: 'Hajnówka',
-          BWM: 'Wysokie Mazowieckie',
-          BIA: 'Białystok powiat',
-          BZA: 'Zambrów',
-          BKL: 'Kolno',
+        "mazowieckie": {
+          "WG": "Garwolin",
+          "WF": "Warszawa-praga pd.",
+          "WE": "Warszawa-mokot\u00f3w",
+          "WD": "Warszawa-bielany",
+          "WB": "Warszawa-bemowo",
+          "WA": "Warszawa-bia\u0142o\u0142\u0119ka",
+          "WL": "Legionowo",
+          "WK": "Warszawa-ursus",
+          "WJ": "Warszawa-targ\u00f3wek",
+          "WI": "Warszawa-\u015ar\u00f3dmie\u015bcie",
+          "WH": "Warszawa-praga pn.",
+          "WBR": "Bia\u0142obrzegi",
+          "WLS": "\u0141osice",
+          "WLI": "Lipsko",
+          "WPY": "Przysucha",
+          "WND": "Nowy dw\u00f3r mazowiecki",
+          "WPU": "Pu\u0142tusk",
+          "WPR": "Pruszk\u00f3w",
+          "WPL": "P\u0142ock powiat",
+          "WPN": "P\u0142o\u0144sk",
+          "WPI": "Piaseczno",
+          "WRA": "Radom powiat",
+          "WGM": "Grodzisk",
+          "WOT": "Otwock",
+          "WOS": "Ostro\u0142\u0119ka powiat",
+          "WOR": "Ostr\u00f3w mazowiecka",
+          "WGS": "Gostynin",
+          "WML": "M\u0142awa",
+          "WCI": "Ciechan\u00f3w",
+          "WMA": "Mak\u00f3w mazowiecki",
+          "WPZ": "Przasnysz",
+          "WKZ": "Kozienice",
+          "WGR": "Gr\u00f3jec"
         },
-        'kujawsko-pomorskie': {
-          CB: 'Bydgoszcz',
-          CMG: 'Mogilno',
-          CG: 'Grudziądz miasto',
-          CNA: 'Nakło n. Notecią',
-          CT: 'Toruń',
-          CRA: 'Radziejów',
-          CW: 'Włocławek miasto',
-          CRY: 'Rypin',
-          CAL: 'Aleksandrów Kujawski',
-          CSE: 'Sępólno Krajeńskie',
-          CBR: 'Brodnica',
-          CSW: 'Świecie',
-          CBY: 'Bydgoszcz powiat',
-          CTR: 'Toruń powiat',
-          CCH: 'Chełmno',
-          CTU: 'Tuchola',
-          CGD: 'Golub-Dobrzyń',
-          CWA: 'Wąbrzeźno',
-          CGR: 'Grudziądz powiat',
-          CWL: 'Włocławek powiat',
-          CIN: 'Inowrocław',
-          CZN: 'Żnin',
-          CLI: 'Lipno',
+        "pomorskie": {
+          "GS": "S\u0142upsk miasto",
+          "GCH": "Chojnice",
+          "GKS": "Ko\u015bcierzyna",
+          "GKW": "Kwidzyn",
+          "GDA": "Pruszcz gda\u0144ski",
+          "GD": "Gda\u0143sk",
+          "GA": "Gdynia",
+          "GKA": "Kartuzy",
+          "GCZ": "Cz\u0142uch\u00f3w",
+          "GBY": "Byt\u00f3w"
         },
-        'dolnośląskie': {
-          DB: 'Wałbrzych miasto',
-          DLU: 'Lubin',
-          DJ: 'Jelenia Góra miasto',
-          DLW: 'Lwówek',
-          DL: 'Legnica miasto',
-          DMI: 'Milicz',
-          DW: 'Wrocław',
-          DOA: 'Oława',
-          DBA: 'Wałbrzych powiat',
-          DOL: 'Oleśnica',
-          DBL: 'Bolesławiec',
-          DPL: 'Polkowice',
-          DDZ: 'Dzierżoniów',
-          DSR: 'Środa Śl.',
-          DGL: 'Głogów',
-          DST: 'Strzelin',
-          DGR: 'Góra',
-          DSW: 'Świdnica',
-          DJA: 'Jawor',
-          DTR: 'Trzebnica',
-          DJE: 'Jelenia Góra powiat',
-          DWL: 'Wołów',
-          DKA: 'Kamienna Góra',
-          DWR: 'Wrocław powiat',
-          DKL: 'Kłodzko',
-          DZA: 'Ząbkowice',
-          DLB: 'Lubań',
-          DZG: 'Zgorzelec',
-          DLE: 'Legnica powiat',
-          DZL: 'Złotoryja',
+        "zachodniopomorskie": {
+          "ZKL": "Ko\u0142obrzeg",
+          "ZGY": "Gryfice",
+          "ZKO": "Koszalin powiat",
+          "ZK": "Koszalin miasto",
+          "ZGR": "Gryfino",
+          "ZCH": "Choszczno",
+          "ZKA": "Kamie\u0144 pomorski",
+          "ZBI": "Bia\u0142ogard",
+          "ZDR": "Drawsko",
+          "ZGL": "Goleni\u00f3w",
+          "ZS": "Szczecin"
         },
+        "kujawsko-pomorskie": {
+          "CGR": "Grudzi\u0105dz powiat",
+          "CLI": "Lipno",
+          "CB": "Bydgoszcz",
+          "CG": "Grudzi\u0105dz miasto",
+          "CGD": "Golub-dobrzy\u0144",
+          "CIN": "Inowroc\u0142aw",
+          "CBR": "Brodnica",
+          "CCH": "Che\u0142mno",
+          "CAL": "Aleksandr\u00f3w kujawski",
+          "CBY": "Bydgoszcz powiat",
+          "CW": "W\u0142oc\u0142awek miasto",
+          "CT": "Toru\u0143"
+        },
+        "ma\u0142opolskie": {
+          "KGR": "Gorlice",
+          "KBC": "Bochnia",
+          "KLI": "Limanowa",
+          "KCH": "Chrzan\u00f3w",
+          "KMI": "Miech\u00f3w",
+          "KN": "Nowy s\u0105cz miasto",
+          "KR": "Krak\u00d3w",
+          "KDA": "D\u0105browa tarnowska",
+          "KT": "Tarn\u00f3w miasto",
+          "KBR": "Brzesko",
+          "KMY": "My\u015blenice"
+        },
+        "opolskie": {
+          "OKR": "Krapkowice",
+          "OK": "K\u0119dzierzyn ko\u017ale",
+          "OB": "Brzeg",
+          "OGL": "G\u0142ubczyce",
+          "OKL": "Kluczbork",
+          "OP": "Opole"
+        },
+        "\u015bwi\u0119tokrzyskie": {
+          "TJE": "J\u0119drzej\u00f3w",
+          "TKA": "Kazimierza wielka",
+          "TKN": "Ko\u0144skie",
+          "TBU": "Busko",
+          "TKI": "Kielce powiat",
+          "TK": "Kielce",
+          "TLW": "W\u0142oszczowa"
+        },
+        "wielkopolskie": {
+          "PKR": "Krotoszyn",
+          "PKS": "Ko\u015bcian",
+          "PP": "Pi\u0142a",
+          "PKN": "Konin powiat",
+          "PZ": "Pozna\u0144 powiat",
+          "PGO": "Grodzisk wlkp.",
+          "PJA": "Jarocin",
+          "PCT": "Czarnk\u00f3w",
+          "PKO": "Konin miasto",
+          "PGN": "Gniezno",
+          "PCH": "Chodzie\u017c",
+          "PKA": "Kalisz powiat",
+          "PGS": "Gosty\u0144",
+          "PKE": "K\u0119pno",
+          "PK": "Kalisz miasto",
+          "PN": "Konin miasto",
+          "PO": "Pozna\u0143",
+          "PL": "Leszno miasto",
+          "PKL": "Ko\u0142o"
+        },
+        "\u0142\u00f3dzkie": {
+          "EL": "\u0141\u00d3d\u0179",
+          "ELW": "\u0141\u00f3d\u017a powiat",
+          "EBE": "Be\u0142chat\u00f3w",
+          "ELC": "\u0141owicz",
+          "ELA": "\u0141ask",
+          "ELE": "\u0141\u0119czyca",
+          "EOP": "Opoczno",
+          "EBR": "Brzeziny",
+          "EKU": "Kutno",
+          "EP": "Piotrk\u00f3w tryb. miasto",
+          "ES": "Skierniewice miasto",
+          "EPA": "Pabianice"
+        },
+        "\u015bl\u0105skie": {
+          "SZ": "Zabrze",
+          "SY": "Bytom",
+          "SR": "Rybnik miasto",
+          "SBE": "B\u0119dzin",
+          "SW": "\u015awi\u0119toch\u0142owice",
+          "ST": "Tychy miasto",
+          "SK": "Katowice",
+          "SJ": "Jaworzno",
+          "SI": "Siemianowice \u015al\u0105skie",
+          "SH": "Chorz\u00f3w",
+          "SO": "Sosnowiec",
+          "SM": "Mys\u0142owice",
+          "SL": "Ruda \u015al\u0105ska",
+          "SC": "Cz\u0119stochowa miasto",
+          "SB": "Bielsko-bia\u0142a miasto",
+          "SBI": "Bielsko-bia\u0142a powiat",
+          "SG": "Gliwice miasto",
+          "SBL": "Tychy powiat",
+          "SD": "D\u0105browa g\u00f3rnicza"
+        },
+        "lubelskie": {
+          "LB": "Bia\u0142a podlaska miasto",
+          "LC": "Che\u0142m miasto",
+          "LJA": "Jan\u00f3w lubelski",
+          "LKR": "Kra\u015bnik",
+          "LKS": "Krasnystaw",
+          "LU": "Lublin",
+          "LHR": "Hrubiesz\u00f3w",
+          "LBI": "Bia\u0142a podlaska powiat",
+          "LLB": "Lubart\u00f3w",
+          "LZ": "Zamo\u015b\u0107 miasto",
+          "LBL": "Bi\u0142goraj",
+          "LCH": "Che\u0142m powiat"
+        },
+        "warmi\u0144sko-mazurskie": {
+          "NEL": "E\u0142k",
+          "NKE": "K\u0119trzyn",
+          "NIL": "I\u0142awa",
+          "NO": "Olsztyn",
+          "NBR": "Braniewo",
+          "NGO": "Go\u0142dap",
+          "NEB": "Elbl\u0105g powiat",
+          "NE": "Elbl\u0105g miasto",
+          "NGI": "Gi\u017cycko",
+          "NDZ": "Dzia\u0142dowo",
+          "NBA": "Bartoszyce"
+        },
+        "podkarpackie": {
+          "RT": "Tarnobrzeg miasto",
+          "RP": "Przemy\u015bl miasto",
+          "RJA": "Jaros\u0142aw",
+          "RKR": "Krosno powiat",
+          "RLE": "Le\u017cajsk",
+          "RLA": "\u0141a\u0144cut",
+          "RBR": "Brzoz\u00f3w",
+          "RZ": "Rzesz\u00d3w",
+          "RDE": "D\u0119bica",
+          "RBI": "Ustrzyki dolne",
+          "RKL": "Kolbuszowa",
+          "RJS": "Jas\u0142o",
+          "RK": "Krosno miasto"
+        },
+        "podlaskie": {
+          "BAU": "August\u00f3w",
+          "BBI": "Bielsk podlaski",
+          "BL": "\u0141om\u017ca miasto",
+          "BKL": "Kolno",
+          "BI": "Bia\u0141ystok",
+          "BIA": "Bia\u0142ystok powiat",
+          "BHA": "Hajn\u00f3wka",
+          "BGR": "Grajewo",
+          "BS": "Suwa\u0142ki miasto"
+        },
+        "lubuskie": {
+          "FNW": "Nowa s\u00f3l",
+          "FSD": "Strzelce kraje\u0144skie",
+          "FZ": "Zielona g\u00d3ra",
+          "FGW": "Gorz\u00f3w wlkp. powiat",
+          "FMI": "Mi\u0119dzyrzecz",
+          "FKR": "Krosno odrza\u0144skie",
+          "FG": "Gorz\u00d3w wlkp."
+        },
+        "dolno\u015bl\u0105skie": {
+          "DDZ": "Dzier\u017coni\u00f3w",
+          "DL": "Legnica miasto",
+          "DJ": "Jelenia g\u00f3ra miasto",
+          "DBL": "Boles\u0142awiec",
+          "DLE": "Legnica powiat",
+          "DLB": "Luba\u0144",
+          "DBA": "Wa\u0142brzych powiat",
+          "DB": "Wa\u0142brzych miasto",
+          "DGL": "G\u0142og\u00f3w",
+          "DGR": "G\u00f3ra",
+          "DJE": "Jelenia g\u00f3ra powiat",
+          "DKA": "Kamienna g\u00f3ra",
+          "DW": "Wroc\u0141aw",
+          "DKL": "K\u0142odzko",
+          "DJA": "Jawor"
+        }
       };
 
 

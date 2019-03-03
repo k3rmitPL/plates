@@ -17,17 +17,16 @@
       body, html {
         margin: 0;
         padding: 0;
+        background: #eee;
         font-family: Arial;
       }
       #content {
-        height: 100vh;
-        padding-bottom: 10vh;
+        height: 80vh;
         font-size: 10vw;
         text-align: center;
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        background: #eee;
         perspective: 700px;
         display: flex;
       }
@@ -77,24 +76,25 @@
 
 
       #next-plate {
-        top: 0;
-        right: 0;
-        width: 100%;
+        top: 5vw;
+        width: 90vw;
         height: 10vh;
         color: #fff;
         font-size: 3vh;
         background: #085c98;
+        border: 0;
         position: absolute;
       }
 
 
       #show-answer {
-        width: 100%;
-        bottom: 0;
+        width: 90vw;
+        bottom: 5vw;
         height: 10vh;
         color: #fff;
         font-size: 3vh;
         background: #08984a;
+        border: 0;
         position: absolute;
       }
 
@@ -102,6 +102,14 @@
         margin: 0 2vw 2vw;
         font-size: 3.5vw;
         color: #888;
+      }
+
+      #version {
+        left: 10px;
+        bottom: 10px;
+        color: #888;
+        font-size: 12px;
+        position: absolute;
       }
     </style>
   </head>
@@ -117,253 +125,452 @@
       <button id="show-answer">Pokaż odpowiedź</button>
       <button id="next-plate">Następna tablica</button>
     </div>
+    <div id="version">wersja: 0.2</div>
 
     <script>
       var plates_mapping = {
-        "mazowieckie": {
-          "WG": "Garwolin",
-          "WF": "Warszawa-praga pd.",
-          "WE": "Warszawa-mokotów",
-          "WD": "Warszawa-bielany",
-          "WB": "Warszawa-bemowo",
-          "WA": "Warszawa-białołęka",
-          "WL": "Legionowo",
-          "WK": "Warszawa-ursus",
-          "WJ": "Warszawa-targówek",
-          "WI": "Warszawa-śródmieście",
-          "WH": "Warszawa-praga pn.",
-          "WBR": "Białobrzegi",
-          "WLS": "Łosice",
-          "WLI": "Lipsko",
-          "WPY": "Przysucha",
-          "WND": "Nowy dwór mazowiecki",
-          "WPU": "Pułtusk",
-          "WPR": "Pruszków",
-          "WPL": "Płock powiat",
-          "WPN": "Płońsk",
-          "WPI": "Piaseczno",
-          "WRA": "Radom powiat",
-          "WGM": "Grodzisk",
-          "WOT": "Otwock",
-          "WOS": "Ostrołęka powiat",
-          "WOR": "Ostrów mazowiecka",
-          "WGS": "Gostynin",
-          "WML": "Mława",
-          "WCI": "Ciechanów",
-          "WMA": "Maków mazowiecki",
-          "WPZ": "Przasnysz",
-          "WKZ": "Kozienice",
-          "WGR": "Grójec"
-        },
-        "pomorskie": {
-          "GS": "Słupsk miasto",
-          "GCH": "Chojnice",
-          "GKS": "Kościerzyna",
-          "GKW": "Kwidzyn",
-          "GDA": "Pruszcz gdański",
-          "GD": "Gdańsk",
-          "GA": "Gdynia",
-          "GKA": "Kartuzy",
-          "GCZ": "Człuchów",
-          "GBY": "Bytów"
-        },
-        "zachodniopomorskie": {
-          "ZKL": "Kołobrzeg",
-          "ZGY": "Gryfice",
-          "ZKO": "Koszalin powiat",
-          "ZK": "Koszalin miasto",
-          "ZGR": "Gryfino",
-          "ZCH": "Choszczno",
-          "ZKA": "Kamień pomorski",
-          "ZBI": "Białogard",
-          "ZDR": "Drawsko",
-          "ZGL": "Goleniów",
-          "ZS": "Szczecin"
+        "dolnośląskie": {
+          "DJ": "Jelenia Góra",
+          "DL": "Legnica",
+          "DB": "Wałbrzych",
+          "DW": "Wrocław",
+          "DX": "Wrocław",
+          "DBL": "p. bolesławiecki (Bolesławiec)",
+          "DDZ": "p. dzierżoniowski (Dzierżoniów)",
+          "DGL": "p. głogowski (Głogów)",
+          "DGR": "p. górowski (Góra)",
+          "DJA": "p. jaworski (Jawor)",
+          "DJE": "p. jeleniogórski (Jelenia Góra)",
+          "DKA": "p. kamiennogórski (Kamienna Góra)",
+          "DKL": "p. kłodzki (Kłodzko)",
+          "DLE": "p. legnicki (Legnica)",
+          "DLB": "p. lubański (Lubań)",
+          "DLU": "p. lubiński (Lubin)",
+          "DLW": "p. lwówecki (Lwówek Śląski)",
+          "DMI": "p. milicki (Milicz)",
+          "DOL": "p. oleśnicki (Oleśnica)",
+          "DOA": "p. oławski (Oława)",
+          "DPL": "p. polkowicki (Polkowice)",
+          "DST": "p. strzeliński (Strzelin)",
+          "DSR": "p. średzki (Środa Śląska)",
+          "DSW": "p. świdnicki (Świdnica)",
+          "DTR": "p. trzebnicki (Trzebnica)",
+          "DBA": "p. wałbrzyski (Wałbrzych)",
+          "DWL": "p. wołowski (Wołów)",
+          "DWR": "p. wrocławski (Wrocław)",
+          "DZA": "p. ząbkowicki (Ząbkowice Śląskie)",
+          "DZG": "p. zgorzelecki (Zgorzelec)",
+          "DZL": "p. złotoryjski (Złotoryja)"
         },
         "kujawsko-pomorskie": {
-          "CGR": "Grudziądz powiat",
-          "CLI": "Lipno",
           "CB": "Bydgoszcz",
-          "CG": "Grudziądz miasto",
-          "CGD": "Golub-dobrzyń",
-          "CIN": "Inowrocław",
-          "CBR": "Brodnica",
-          "CCH": "Chełmno",
-          "CAL": "Aleksandrów kujawski",
-          "CBY": "Bydgoszcz powiat",
-          "CW": "Włocławek miasto",
-          "CT": "Toruń"
+          "CG": "Grudziądz",
+          "CT": "Toruń",
+          "CW": "Włocławek",
+          "CAL": "p. aleksandrowski (Aleksandrów Kujawski)",
+          "CBR": "p. brodnicki (Brodnica)",
+          "CBY": "p. bydgoski (Bydgoszcz)",
+          "CCH": "p. chełmiński (Chełmno)",
+          "CGD": "p. golubsko-dobrzyński (Golub-Dobrzyń)",
+          "CGR": "p. grudziądzki (Grudziądz)",
+          "CIN": "p. inowrocławski (Inowrocław)",
+          "CLI": "p. lipnowski (Lipno)",
+          "CMG": "p. mogileński (Mogilno)",
+          "CNA": "p. nakielski (Nakło nad Notecią)",
+          "CRA": "p. radziejowski (Radziejów)",
+          "CRY": "p. rypiński (Rypin)",
+          "CSE": "p. sępoleński (Sępólno Krajeńskie)",
+          "CSW": "p. świecki (Świecie)",
+          "CTR": "p. toruński (Toruń)",
+          "CTU": "p. tucholski (Tuchola)",
+          "CWA": "p. wąbrzeski (Wąbrzeźno)",
+          "CWL": "p. włocławski (Włocławek)",
+          "CZN": "p. żniński (Żnin)"
         },
-        "małopolskie": {
-          "KGR": "Gorlice",
-          "KBC": "Bochnia",
-          "KLI": "Limanowa",
-          "KCH": "Chrzanów",
-          "KMI": "Miechów",
-          "KN": "Nowy sącz miasto",
-          "KR": "Kraków",
-          "KDA": "Dąbrowa tarnowska",
-          "KT": "Tarnów miasto",
-          "KBR": "Brzesko",
-          "KMY": "Myślenice"
+        "lubelskie": {
+          "LB": "Biała Podlaska",
+          "LC": "Chełm",
+          "LU": "Lublin",
+          "LZ": "Zamość",
+          "LBI": "p. bialski (Biała Podlaska)",
+          "LBL": "p. biłgorajski (Biłgoraj)",
+          "LCH": "p. chełmski (Chełm)",
+          "LHR": "p. hrubieszowski (Hrubieszów)",
+          "LJA": "p. janowski (Janów Lubelski)",
+          "LKS": "p. krasnostawski (Krasnystaw)",
+          "LKR": "p. kraśnicki (Kraśnik)",
+          "LLB": "p. lubartowski (Lubartów)",
+          "LUB": "p. lubelski (Lublin)",
+          "LLE": "p. łęczyński (Łęczna)",
+          "LLU": "p. łukowski (Łuków)",
+          "LOP": "p. opolski (Opole Lubelskie)",
+          "LPA": "p. parczewski (Parczew)",
+          "LPU": "p. puławski (Puławy)",
+          "LRA": "p. radzyński (Radzyń Podlaski)",
+          "LRY": "p. rycki (Ryki)",
+          "LSW": "p. świdnicki (Świdnik)",
+          "LTM": "p. tomaszowski (Tomaszów Lubelski)",
+          "LWL": "p. włodawski (Włodawa)",
+          "LZA": "p. zamojski (Zamość)"
         },
-        "opolskie": {
-          "OKR": "Krapkowice",
-          "OK": "Kędzierzyn koźle",
-          "OB": "Brzeg",
-          "OGL": "Głubczyce",
-          "OKL": "Kluczbork",
-          "OP": "Opole"
-        },
-        "świętokrzyskie": {
-          "TJE": "Jędrzejów",
-          "TKA": "Kazimierza wielka",
-          "TKN": "Końskie",
-          "TBU": "Busko",
-          "TKI": "Kielce powiat",
-          "TK": "Kielce",
-          "TLW": "Włoszczowa"
-        },
-        "wielkopolskie": {
-          "PKR": "Krotoszyn",
-          "PKS": "Kościan",
-          "PP": "Piła",
-          "PKN": "Konin powiat",
-          "PZ": "Poznań powiat",
-          "PGO": "Grodzisk wlkp.",
-          "PJA": "Jarocin",
-          "PCT": "Czarnków",
-          "PKO": "Konin miasto",
-          "PGN": "Gniezno",
-          "PCH": "Chodzieź",
-          "PKA": "Kalisz powiat",
-          "PGS": "Gostyń",
-          "PKE": "Kępno",
-          "PK": "Kalisz miasto",
-          "PN": "Konin miasto",
-          "PO": "Poznań",
-          "PL": "Leszno miasto",
-          "PKL": "Koło"
+        "lubuskie": {
+          "FG": "Gorzów Wielkopolski",
+          "FZ": "Zielona Góra",
+          "FGW": "p. gorzowski (Gorzów Wielkopolski)",
+          "FKR": "p. krośnieński (Krosno Odrzańskie)",
+          "FMI": "p. międzyrzecki (Międzyrzecz)",
+          "FNW": "p. nowosolski (Nowa Sól)",
+          "FSL": "p. słubicki (Słubice)",
+          "FSD": "p. strzelecko-drezdenecki (Strzelce Krajeńskie)",
+          "FSU": "p. sulęciński (Sulęcin)",
+          "FSW": "p. świebodziński (Świebodzin)",
+          "FWS": "p. wschowski (Wschowa)",
+          "FZI": "p. zielonogórski (Zielona Góra)",
+          "FZG": "p. żagański (Żagań)",
+          "FZA": "p. żarski (Żary)"
         },
         "łódzkie": {
           "EL": "Łódź",
-          "ELW": "Łódź powiat",
-          "EBE": "Bełchatów",
-          "ELC": "Łowicz",
-          "ELA": "Łask",
-          "ELE": "Łęczyca",
-          "EOP": "Opoczno",
-          "EBR": "Brzeziny",
-          "EKU": "Kutno",
-          "EP": "Piotrków tryb. miasto",
-          "ES": "Skierniewice miasto",
-          "EPA": "Pabianice"
+          "ED": "Łódź",
+          "EP": "Piotrków Trybunalski",
+          "ES": "Skierniewice",
+          "EBE": "p. bełchatowski (Bełchatów)",
+          "EBR": "p. brzeziński (Brzeziny)",
+          "EKU": "p. kutnowski (Kutno)",
+          "ELA": "p. łaski (Łask)",
+          "ELE": "p. łęczycki (Łęczyca)",
+          "ELC": "p. łowicki (Łowicz)",
+          "ELW": "p. łódzki wschodni (Łódź)",
+          "EOP": "p. opoczyński (Opoczno)",
+          "EPA": "p. pabianicki (Pabianice)",
+          "EPJ": "p. pajęczański (Pajęczno)",
+          "EPI": "p. piotrkowski (Piotrków Trybunalski)",
+          "EPD": "p. poddębicki (Poddębice)",
+          "ERA": "p. radomszczański (Radomsko)",
+          "ERW": "p. rawski (Rawa Mazowiecka)",
+          "ESI": "p. sieradzki (Sieradz)",
+          "ESK": "p. skierniewicki (Skierniewice)",
+          "ETM": "p. tomaszowski (Tomaszów Mazowiecki)",
+          "EWI": "p. wieluński (Wieluń)",
+          "EWE": "p. wieruszowski (Wieruszów)",
+          "EZD": "p. zduńskowolski (Zduńska Wola)",
+          "EZG": "p. zgierski (Zgierz)"
         },
-        "śląskie": {
-          "SZ": "Zabrze",
-          "SY": "Bytom",
-          "SR": "Rybnik miasto",
-          "SBE": "Będzin",
-          "SW": "świętochłowice",
-          "ST": "Tychy miasto",
-          "SK": "Katowice",
-          "SJ": "Jaworzno",
-          "SI": "Siemianowice śląskie",
-          "SH": "Chorzów",
-          "SO": "Sosnowiec",
-          "SM": "Mysłowice",
-          "SL": "Ruda śląska",
-          "SC": "Częstochowa miasto",
-          "SB": "Bielsko-biała miasto",
-          "SBI": "Bielsko-biała powiat",
-          "SG": "Gliwice miasto",
-          "SBL": "Tychy powiat",
-          "SD": "Dąbrowa górnicza"
+        "małopolskie": {
+          "KR": "Kraków",
+          "KK": "Kraków",
+          "KN": "Nowy Sącz",
+          "KT": "Tarnów",
+          "KBC": "p. bocheński (Bochnia)",
+          "KBA": "p. bocheński (Bochnia)",
+          "KBR": "p. brzeski (Brzesko)",
+          "KCH": "p. chrzanowski (Chrzanów)",
+          "KDA": "p. dąbrowski (Dąbrowa Tarnowska)",
+          "KGR": "p. gorlicki (Gorlice)",
+          "KRA": "p. krakowski (Kraków)",
+          "KLI": "p. limanowski (Limanowa)",
+          "KMI": "p. miechowski (Miechów)",
+          "KMY": "p. myślenicki (Myślenice)",
+          "KNS": "p. nowosądecki (Nowy Sącz)",
+          "KNT": "p. nowotarski (Nowy Targ)",
+          "KOL": "p. olkuski (Olkusz)",
+          "KOS": "p. oświęcimski (Oświęcim)",
+          "KPR": "p. proszowicki (Proszowice)",
+          "KSU": "p. suski (Sucha Beskidzka)",
+          "KTA": "p. tarnowski (Tarnów)",
+          "KTT": "p. tatrzański (Zakopane)",
+          "KWA": "p. wadowicki (Wadowice)",
+          "KWI": "p. wielicki (Wieliczka)"
         },
-        "lubelskie": {
-          "LB": "Biała podlaska miasto",
-          "LC": "Chełm miasto",
-          "LJA": "Janów lubelski",
-          "LKR": "Kraśnik",
-          "LKS": "Krasnystaw",
-          "LU": "Lublin",
-          "LHR": "Hrubieszów",
-          "LBI": "Biała podlaska powiat",
-          "LLB": "Lubartów",
-          "LZ": "Zamość miasto",
-          "LBL": "Biłgoraj",
-          "LCH": "Chełm powiat"
+        "mazowieckie": {
+          "WO": "Ostrołęka",
+          "WP": "Płock",
+          "WR": "Radom",
+          "WS": "Siedlce",
+          "WBR": "p. białobrzeski (Białobrzegi)",
+          "WCI": "p. ciechanowski (Ciechanów)",
+          "WG": "p. garwoliński (Garwolin)",
+          "WGS": "p. gostyniński (Gostynin)",
+          "WGM": "p. grodziski (Grodzisk Mazowiecki)",
+          "WGR": "p. grójecki (Grójec)",
+          "WKZ": "p. kozienicki (Kozienice)",
+          "WL": "p. legionowski (Legionowo)",
+          "WLI": "p. lipski (Lipsko)",
+          "WLS": "p. łosicki (Łosice)",
+          "WMA": "p. makowski (Maków Mazowiecki)",
+          "WM": "p. miński (Mińsk Mazowiecki)",
+          "WML": "p. mławski (Mława)",
+          "WND": "p. nowodworski (Nowy Dwór Mazowiecki)",
+          "WOS": "p. ostrołęcki (Ostrołęka)",
+          "WOR": "p. ostrowski (Ostrów Mazowiecka)",
+          "WOT": "p. otwocki (Otwock)",
+          "WPI": "p. piaseczyński (Piaseczno)",
+          "WPA": "p. piaseczyński (Piaseczno)",
+          "WPL": "p. płocki (Płock)",
+          "WPN": "p. płoński (Płońsk)",
+          "WPR": "p. pruszkowski (Pruszków)",
+          "WPP": "p. pruszkowski (Pruszków)",
+          "WPZ": "p. przasnyski (Przasnysz)",
+          "WPY": "p. przysuski (Przysucha)",
+          "WPU": "p. pułtuski (Pułtusk)",
+          "WRA": "p. radomski (Radom)",
+          "WSI": "p. siedlecki (Siedlce)",
+          "WSE": "p. sierpecki (Sierpc)",
+          "WSC": "p. sochaczewski (Sochaczew)",
+          "WSK": "p. sokołowski (Sokołów Podlaski)",
+          "WSZ": "p. szydłowiecki (Szydłowiec)",
+          "WZ": "p. warszawski zachodni (Ożarów Mazowiecki)",
+          "WWE": "p. węgrowski (Węgrów)",
+          "WWL": "p. wołomiński (Wołomin)",
+          "WV": "p. wołomiński (Wołomin)",
+          "WWY": "p. wyszkowski (Wyszków)",
+          "WZW": "p. zwoleński (Zwoleń)",
+          "WZU": "p. żuromiński (Żuromin)",
+          "WZY": "p. żyrardowski (Żyrardów)",
+          "WB": "Warszawa Bemowo",
+          "WA": "Warszawa Białołęka",
+          "WD": "Warszawa Bielany",
+          "WE": "Warszawa Mokotów",
+          "WU": "Warszawa Ochota",
+          "WF": "Warszawa Praga-Południe",
+          "WH": "Warszawa Praga-Północ",
+          "WI": "Warszawa Śródmieście",
+          "WJ": "Warszawa Targówek",
+          "WK": "Warszawa Ursus",
+          "WN": "Warszawa Ursynów",
+          "WT": "Warszawa Wawer",
+          "WY": "Warszawa Wola",
+          "WX": "Warszawa Żoliborz",
+          "WW.A": "Warszawa Rembertów",
+          "WX.Y": "Warszawa Wesoła",
+          "WW.F": "Warszawa Wilanów",
+          "WW.K": "Warszawa Włochy"
         },
-        "warmińsko-mazurskie": {
-          "NEL": "Ełk",
-          "NKE": "Kętrzyn",
-          "NIL": "Iława",
-          "NO": "Olsztyn",
-          "NBR": "Braniewo",
-          "NGO": "Gołdap",
-          "NEB": "Elbląg powiat",
-          "NE": "Elbląg miasto",
-          "NGI": "Giźycko",
-          "NDZ": "Działdowo",
-          "NBA": "Bartoszyce"
+        "opolskie": {
+          "OP": "Opole",
+          "OB": "p. brzeski (Brzeg)",
+          "OGL": "p. głubczycki (Głubczyce)",
+          "OK": "p. kędzierzyńsko-kozielski (Kędzierzyn-Koźle)",
+          "OKL": "p. kluczborski (Kluczbork)",
+          "OKR": "p. krapkowicki (Krapkowice)",
+          "ONA": "p. namysłowski (Namysłów)",
+          "ONY": "p. nyski (Nysa)",
+          "OOL": "p. oleski (Olesno)",
+          "OPO": "p. opolski (Opole)",
+          "OPR": "p. prudnicki (Prudnik)",
+          "OST": "p. strzelecki (Strzelce Opolskie)"
         },
         "podkarpackie": {
-          "RT": "Tarnobrzeg miasto",
-          "RP": "Przemyśl miasto",
-          "RJA": "Jarosław",
-          "RKR": "Krosno powiat",
-          "RLE": "Leźajsk",
-          "RLA": "Łańcut",
-          "RBR": "Brzozów",
+          "RK": "Krosno",
+          "RP": "Przemyśl",
           "RZ": "Rzeszów",
-          "RDE": "Dębica",
-          "RBI": "Ustrzyki dolne",
-          "RKL": "Kolbuszowa",
-          "RJS": "Jasło",
-          "RK": "Krosno miasto"
+          "RT": "Tarnobrzeg",
+          "RBI": "p. bieszczadzki (Ustrzyki Dolne)",
+          "RBR": "p. brzozowski (Brzozów)",
+          "RDE": "p. dębicki (Dębica)",
+          "RJA": "p. jarosławski (Jarosław)",
+          "RJS": "p. jasielski (Jasło)",
+          "RKL": "p. kolbuszowski (Kolbuszowa)",
+          "RKR": "p. krośnieński (Krosno)",
+          "RLS": "p. leski (Lesko)",
+          "RLE": "p. leżajski (Leżajsk)",
+          "RLU": "p. lubaczowski (Lubaczów)",
+          "RLA": "p. łańcucki (Łańcut)",
+          "RMI": "p. mielecki (Mielec)",
+          "RNI": "p. niżański (Nisko)",
+          "RPR": "p. przemyski (Przemyśl)",
+          "RPZ": "p. przeworski (Przeworsk)",
+          "RRS": "p. ropczycko-sędziszowski (Ropczyce)",
+          "RZE": "p. rzeszowski (Rzeszów)",
+          "RSA": "p. sanocki (Sanok)",
+          "RST": "p. stalowowolski (Stalowa Wola)",
+          "RSR": "p. strzyżowski (Strzyżów)",
+          "RTA": "p. tarnobrzeski (Tarnobrzeg)"
         },
         "podlaskie": {
-          "BAU": "Augustów",
-          "BBI": "Bielsk podlaski",
-          "BL": "Łomźa miasto",
-          "BKL": "Kolno",
           "BI": "Białystok",
-          "BIA": "Białystok powiat",
-          "BHA": "Hajnówka",
-          "BGR": "Grajewo",
-          "BS": "Suwałki miasto"
+          "BL": "Łomża",
+          "BS": "Suwałki",
+          "BAU": "p. augustowski (Augustów)",
+          "BIA": "p. białostocki (Białystok)",
+          "BBI": "p. bielski (Bielsk Podlaski)",
+          "BGR": "p. grajewski (Grajewo)",
+          "BHA": "p. hajnowski (Hajnówka)",
+          "BKL": "p. kolneński (Kolno)",
+          "BLM": "p. łomżyński (Łomża)",
+          "BMN": "p. moniecki (Mońki)",
+          "BSE": "p. sejneński (Sejny)",
+          "BSI": "p. siemiatycki (Siemiatycze)",
+          "BSK": "p. sokólski (Sokółka)",
+          "BSU": "p. suwalski (Suwałki)",
+          "BWM": "p. wysokomazowiecki (Wysokie Mazowieckie)",
+          "BZA": "p. zambrowski (Zambrów)"
         },
-        "lubuskie": {
-          "FNW": "Nowa sól",
-          "FSD": "Strzelce krajeńskie",
-          "FZ": "Zielona góra",
-          "FGW": "Gorzów wlkp. powiat",
-          "FMI": "Międzyrzecz",
-          "FKR": "Krosno odrzańskie",
-          "FG": "Gorzów wlkp."
+        "pomorskie": {
+          "GD": "Gdańsk",
+          "GA": "Gdynia",
+          "GS": "Słupsk",
+          "GSP": "Sopot",
+          "GBY": "p. bytowski (Bytów)",
+          "GCH": "p. chojnicki (Chojnice)",
+          "GCZ": "p. człuchowski (Człuchów)",
+          "GDA": "p. gdański (Pruszcz Gdański)",
+          "GKA": "p. kartuski (Kartuzy)",
+          "GKS": "p. kościerski (Kościerzyna)",
+          "GKW": "p. kwidzyński (Kwidzyn)",
+          "GLE": "p. lęborski (Lębork)",
+          "GMB": "p. malborski (Malbork)",
+          "GND": "p. nowodworski (Nowy Dwór Gdański)",
+          "GPU": "p. pucki (Puck)",
+          "GSL": "p. słupski (Słupsk)",
+          "GST": "p. starogardzki (Starogard Gdański)",
+          "GSZ": "p. sztumski (Sztum)",
+          "GTC": "p. tczewski (Tczew)",
+          "GWE": "p. wejherowski (Wejherowo)",
+          "GWO": "p. wejherowski (Wejherowo)"
         },
-        "dolnośląskie": {
-          "DDZ": "Dzierźoniów",
-          "DL": "Legnica miasto",
-          "DJ": "Jelenia góra miasto",
-          "DBL": "Bolesławiec",
-          "DLE": "Legnica powiat",
-          "DLB": "Lubań",
-          "DBA": "Wałbrzych powiat",
-          "DB": "Wałbrzych miasto",
-          "DGL": "Głogów",
-          "DGR": "Góra",
-          "DJE": "Jelenia góra powiat",
-          "DKA": "Kamienna góra",
-          "DW": "WrocŁaw",
-          "DKL": "Kłodzko",
-          "DJA": "Jawor"
-        }
+        "śląskie": {
+          "SB": "Bielsko-Biała",
+          "SY": "Bytom",
+          "SH": "Chorzów",
+          "SC": "Częstochowa",
+          "SD": "Dąbrowa Górnicza",
+          "SG": "Gliwice",
+          "SJZ": "Jastrzębie-Zdrój",
+          "SJ": "Jaworzno",
+          "SK": "Katowice",
+          "SM": "Mysłowice",
+          "SPI": "Piekary Śląskie",
+          "SL": "Ruda Śląska (SRS)",
+          "SR": "Rybnik",
+          "SI": "Siemianowice Śląskie",
+          "SO": "Sosnowiec",
+          "SW": "Świętochłowice",
+          "ST": "Tychy",
+          "SZ": "Zabrze",
+          "SZO": "Żory",
+          "SBE": "p. będziński (Będzin)",
+          "SBI": "p. bielski (Bielsko-Biała)",
+          "SBL": "p. bieruńsko-lędziński (Bieruń)",
+          "SCI": "p. cieszyński (Cieszyn)",
+          "SCZ": "p. częstochowski (Częstochowa)",
+          "SGL": "p. gliwicki (Gliwice)",
+          "SKL": "p. kłobucki (Kłobuck)",
+          "SLU": "p. lubliniecki (Lubliniec)",
+          "SMI": "p. mikołowski (Mikołów)",
+          "SMY": "p. myszkowski (Myszków)",
+          "SPS": "p. pszczyński (Pszczyna)",
+          "SRC": "p. raciborski (Racibórz)",
+          "SRB": "p. rybnicki (Rybnik)",
+          "STA": "p. tarnogórski (Tarnowskie Góry)",
+          "SWD": "p. wodzisławski (Wodzisław Śląski)",
+          "SWZ": "p. wodzisławski (Wodzisław Śląski)",
+          "SZA": "p. zawierciański (Zawiercie)",
+          "SZY": "p. żywiecki (Żywiec)"
+        },
+        "świętokrzyskie": {
+          "TK": "Kielce",
+          "TBU": "p. buski (Busko Zdrój)",
+          "TJE": "p. jędrzejowski (Jędrzejów)",
+          "TKA": "p. kazimierski (Kazimierza Wielka)",
+          "TKI": "p. kielecki (Kielce)",
+          "TKN": "p. konecki (Końskie)",
+          "TOP": "p. opatowski (Opatów)",
+          "TOS": "p. ostrowiecki (Ostrowiec Świętokrzyski)",
+          "TPI": "p. pińczowski (Pińczów)",
+          "TSA": "p. sandomierski (Sandomierz)",
+          "TSK": "p. skarżyski (Skarżysko-Kamienna)",
+          "TST": "p. starachowicki (Starachowice)",
+          "TSZ": "p. staszowski (Staszów)",
+          "TLW": "p. włoszczowski (Włoszczowa)"
+        },
+        "warmińsko-mazurskie": {
+          "NE": "Elbląg",
+          "NO": "Olsztyn",
+          "NBA": "p. bartoszycki (Bartoszyce)",
+          "NBR": "p. braniewski (Braniewo)",
+          "NDZ": "p. działdowski (Działdowo)",
+          "NEB": "p. elbląski (Elbląg)",
+          "NEL": "p. ełcki (Ełk)",
+          "NGI": "p. giżycki (Giżycko)",
+          "NGO": "p. gołdapski (Gołdap)",
+          "NIL": "p. iławski (Iława)",
+          "NKE": "p. kętrzyński (Kętrzyn)",
+          "NLI": "p. lidzbarski (Lidzbark Warmiński)",
+          "NMR": "p. mrągowski (Mrągowo)",
+          "NNI": "p. nidzicki (Nidzica)",
+          "NNM": "p. nowomiejski (Nowe Miasto Lubawskie)",
+          "NOE": "p. olecki (Olecko)",
+          "NOL": "p. olsztyński (Olsztyn)",
+          "NOS": "p. ostródzki (Ostróda)",
+          "NPI": "p. piski (Pisz)",
+          "NSZ": "p. szczycieński (Szczytno)",
+          "NWE": "p. węgorzewski (Węgorzewo)"
+        },
+        "wielkopolskie": {
+          "PK": "Kalisz",
+          "PA": "Kalisz",
+          "PN": "Konin (PKO)",
+          "PL": "Leszno",
+          "PO": "Poznań",
+          "PY": "Poznań",
+          "PCH": "p. chodzieski (Chodzież)",
+          "PCT": "p. czarnkowsko-trzcianecki (Czarnków)",
+          "PGN": "p. gnieźnieński (Gniezno)",
+          "PGS": "p. gostyński (Gostyń)",
+          "PGO": "p. grodziski (Grodzisk Wielkopolski)",
+          "PJA": "p. jarociński (Jarocin)",
+          "PKA": "p. kaliski (Kalisz)",
+          "PKE": "p. kępiński (Kępno)",
+          "PKL": "p. kolski (Koło)",
+          "PKN": "p. koniński (Konin)",
+          "PKS": "p. kościański (Kościan)",
+          "PKR": "p. krotoszyński (Krotoszyn)",
+          "PLE": "p. leszczyński (Leszno)",
+          "PMI": "p. międzychodzki (Międzychód)",
+          "PNT": "p. nowotomyski (Nowy Tomyśl)",
+          "POB": "p. obornicki (Oborniki)",
+          "POS": "p. ostrowski (Ostrów Wielkopolski)",
+          "POT": "p. ostrzeszowski (Ostrzeszów)",
+          "PP": "p. pilski (Piła)",
+          "PPL": "p. pleszewski (Pleszew)",
+          "PZ": "p. poznański (Poznań)",
+          "PRA": "p. rawicki (Rawicz)",
+          "PSL": "p. słupecki (Słupca)",
+          "PSZ": "p. szamotulski (Szamotuły)",
+          "PSE": "p. śremski (Śrem)",
+          "PSR": "p. średzki (Środa Wielkopolska)",
+          "PTU": "p. turecki (Turek)",
+          "PWA": "p. wągrowiecki (Wągrowiec)",
+          "PWL": "p. wolsztyński (Wolsztyn)",
+          "PWR": "p. wrzesiński (Września)",
+          "PZL": "p. złotowski (Złotów)"
+        },
+        "zachodniopomorskie": {
+          "ZK": "Koszalin",
+          "ZS": "Szczecin",
+          "ZZ": "Szczecin",
+          "ZSW": "Świnoujście",
+          "ZBI": "p. białogardzki (Białogard)",
+          "ZCH": "p. choszczeński (Choszczno)",
+          "ZDR": "p. drawski (Drawsko Pomorskie)",
+          "ZGL": "p. goleniowski (Goleniów)",
+          "ZGY": "p. gryficki (Gryfice)",
+          "ZGR": "p. gryfiński (Gryfino)",
+          "ZKA": "p. kamieński (Kamień Pomorski)",
+          "ZKL": "p. kołobrzeski (Kołobrzeg)",
+          "ZKO": "p. koszaliński (Koszalin)",
+          "ZLO": "p. łobeski (Łobez)",
+          "ZMY": "p. myśliborski (Myślibórz)",
+          "ZPL": "p. policki (Police)",
+          "ZPY": "p. pyrzycki (Pyrzyce)",
+          "ZSL": "p. sławieński (Sławno)",
+          "ZST": "p. stargardzki (Stargard)",
+          "ZSZ": "p. szczecinecki (Szczecinek)",
+          "ZSD": "p. świdwiński (Świdwin)",
+          "ZWA": "p. wałecki (Wałcz)"
+        },
       };
-
-
-
-
       var filtered_plates = filterPlates();
       var total_count = 0;
       for (var i = 0; i < Object.keys(plates_mapping).length; i++) {
@@ -382,7 +589,7 @@
         document.querySelector('#plate .number').innerText = city_code + ' ' + number;
 
         var answer = document.getElementById('answer');
-        answer.innerText = voivodeship + ', ' + filtered_plates[voivodeship][city_code];
+        answer.innerHTML = filtered_plates[voivodeship][city_code] + "<br>" + voivodeship;
 
         addPlateToSeen(voivodeship, city_code);
       }
@@ -392,11 +599,11 @@
         var c = getCookie('seenCities');
 
         if (!c) {
-          console.log("no data");
+          // console.log("no data");
           return plates_mapping;
         }
         var seenCities = JSON.parse(c);
-        console.log(seenCities);
+        // console.log(seenCities);
         updateCounter(seenCities.length);
         if (seenCities.length > 0) {
           var voivodeships_to_delete = [];
@@ -404,7 +611,7 @@
             var voivodeship = Object.keys(plates_mapping)[i];
             for (var l = 0; l < Object.keys(plates_mapping[voivodeship]).length; l++) {
               var city_code = Object.keys(plates_mapping[voivodeship])[l];
-              console.log(city_code + " : " + seenCities.indexOf(city_code));
+              // console.log(city_code + " : " + seenCities.indexOf(city_code));
               if (seenCities.indexOf(city_code) == -1) {
                 if (Object.keys(filtered_plates).indexOf(voivodeship) == -1) {
                   filtered_plates[voivodeship] = {};
@@ -442,10 +649,10 @@
         seenCities.push(city_code);
         setCookie('seenCities', JSON.stringify(seenCities), 360);
         updateCounter(seenCities.length);
-        console.log("Remove city: " + filtered_plates[voivodeship][city_code]);
+        // console.log("Remove city: " + filtered_plates[voivodeship][city_code]);
         delete filtered_plates[voivodeship][city_code];
         if (Object.keys(filtered_plates[voivodeship]).length == 0) {
-          console.log("Remove voivodeship: " + voivodeship)
+          // console.log("Remove voivodeship: " + voivodeship)
           delete filtered_plates[voivodeship];
         }
 
